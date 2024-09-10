@@ -23,6 +23,11 @@ public:
         this->energyLevel += 20;  // Use of 'this' pointer to access the object's energyLevel
         cout << this->species << " is eating. Energy restored to: " << this->energyLevel << endl;
     }
+
+    // Function to display animal information
+    void displayInfo() {
+        cout << "Species: " << this->species << ", Energy Level: " << this->energyLevel << endl;
+    }
 };
 
 // Class definition for Plant
@@ -48,30 +53,40 @@ public:
             cout << this->plantType << " is not edible." << endl;
         }
     }
+
+    // Function to display plant information
+    void displayInfo() {
+        cout << "Plant Type: " << this->plantType << ", Growth Rate: " << this->growthRate << endl;
+    }
 };
 
-
 int main() {
-    // Create objects (instances) of Animal and Plant classes
-    Animal lion("Lion", 100);
-    Animal deer("Deer", 80);
+    // Array of Animal objects
+    Animal animals[3] = {
+        Animal("Lion", 100),
+        Animal("Deer", 80),
+        Animal("Elephant", 150)
+    };
 
-    Plant grass("Grass", 5);
-    Plant cactus("Cactus", 2);
+    // Array of Plant objects
+    Plant plants[2] = {
+        Plant("Grass", 5),
+        Plant("Cactus", 2)
+    };
 
     // Call member functions on Animal objects
-    lion.move();
-    lion.eat();
-
-    deer.move();
-    deer.eat();
+    for (int i = 0; i < 3; i++) {
+        animals[i].move();
+        animals[i].eat();
+        animals[i].displayInfo();
+    }
 
     // Call member functions on Plant objects
-    grass.grow();
-    grass.isEdible();
-
-    cactus.grow();
-    cactus.isEdible();
+    for (int i = 0; i < 2; i++) {
+        plants[i].grow();
+        plants[i].isEdible();
+        plants[i].displayInfo();
+    }
 
     return 0;
 }
