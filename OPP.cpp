@@ -7,10 +7,20 @@ class Animal {
 private:
     string species;
     int energyLevel;
+    static int totalAnimals;  // Static variable to keep track of the number of Animal instances
 
 public:
     // Constructor to initialize animal's species and energy level
-    Animal(string sp, int energy) : species(sp), energyLevel(energy) {}
+    Animal(string sp, int energy) : species(sp), energyLevel(energy) {
+        totalAnimals++;  // Increment totalAnimals when a new Animal is created
+        cout << "A new " << species << " has been created. Total animals: " << totalAnimals << endl;  // Output the creation of a new animal
+    }
+
+    // Destructor to decrement totalAnimals when an Animal is destroyed
+    ~Animal() {
+        totalAnimals--;
+        cout << species << " has been destroyed. Total animals: " << totalAnimals << endl;  // Output the destruction of an animal
+    }
 
     // Member function to simulate animal movement
     void move() {
@@ -24,11 +34,19 @@ public:
         cout << this->species << " is eating. Energy restored to: " << this->energyLevel << endl;
     }
 
+    // Static function to display the total number of animals
+    static void displayTotalAnimals() {
+        cout << "Total number of animals: " << totalAnimals << endl;
+    }
+
     // Function to display animal information
     void displayInfo() {
         cout << "Species: " << this->species << ", Energy Level: " << this->energyLevel << endl;
     }
 };
+
+// Initialize static variable
+int Animal::totalAnimals = 0;
 
 // Class definition for Plant
 class Plant {
@@ -67,17 +85,20 @@ int main() {
     animals[1] = new Animal("Deer", 80);
     animals[2] = new Animal("Elephant", 150);
 
-    // Dynamically allocate memory for Plant objects
-    Plant* plants[2];
-    plants[0] = new Plant("Grass", 5);
-    plants[1] = new Plant("Cactus", 2);
-
     // Call member functions on Animal objects
     for (int i = 0; i < 3; i++) {
         animals[i]->move();
         animals[i]->eat();
         animals[i]->displayInfo();
     }
+
+    // Display total animals
+    Animal::displayTotalAnimals();
+
+    // Dynamically allocate memory for Plant objects
+    Plant* plants[2];
+    plants[0] = new Plant("Grass", 5);
+    plants[1] = new Plant("Cactus", 2);
 
     // Call member functions on Plant objects
     for (int i = 0; i < 2; i++) {
@@ -95,6 +116,8 @@ int main() {
     for (int i = 0; i < 2; i++) {
         delete plants[i];
     }
+    
+    cout << "Memory deallocated." << endl;
 
     return 0;
 }
