@@ -7,19 +7,19 @@ class Animal {
 private:
     string species;
     int energyLevel;
-    static int totalAnimals;  // Static variable to keep track of the number of Animal instances
+    static int totalAnimals;  // Static variable to keep track of the number of Animal
 
 public:
     // Constructor to initialize animal's species and energy level
     Animal(string sp, int energy) : species(sp), energyLevel(energy) {
-        totalAnimals++;  // Increment totalAnimals when a new Animal is created
-        cout << "A new " << species << " has been created. Total animals: " << totalAnimals << endl;  // Output the creation of a new animal
+        totalAnimals++;  // Increment totalAnimals
+        cout << "A new " << species << " has been created. Total animals: " << totalAnimals << endl;
     }
 
     // Destructor to decrement totalAnimals when an Animal is destroyed
     ~Animal() {
         totalAnimals--;
-        cout << species << " has been destroyed. Total animals: " << totalAnimals << endl;  // Output the destruction of an animal
+        cout << species << " has been destroyed. Total animals: " << totalAnimals << endl;
     }
 
     // Member function to simulate animal movement
@@ -48,15 +48,26 @@ public:
 // Initialize static variable
 int Animal::totalAnimals = 0;
 
+
 // Class definition for Plant
 class Plant {
 private:
     string plantType;
     int growthRate;
+    static int totalPlants;  // Static variable to keep track of the number of Plant instances
 
 public:
     // Constructor to initialize plant type and growth rate
-    Plant(string type, int rate) : plantType(type), growthRate(rate) {}
+    Plant(string type, int rate) : plantType(type), growthRate(rate) {
+        totalPlants++;  // Increment totalPlants when a new Plant is created
+        cout << "A new " << plantType << " has been created. Total plants: " << totalPlants << endl;
+    }
+
+    // Destructor to decrement totalPlants when a Plant is destroyed
+    ~Plant() {
+        totalPlants--;
+        cout << plantType << " has been destroyed. Total plants: " << totalPlants << endl;
+    }
 
     // Member function to simulate plant growing
     void grow() {
@@ -72,11 +83,19 @@ public:
         }
     }
 
+    // Static function to display the total number of plants
+    static void displayTotalPlants() {
+        cout << "Total number of plants: " << totalPlants << endl;
+    }
+
     // Function to display plant information
     void displayInfo() {
         cout << "Plant Type: " << this->plantType << ", Growth Rate: " << this->growthRate << endl;
     }
 };
+
+// Initialize static variable
+int Plant::totalPlants = 0;
 
 int main() {
     // Dynamically allocate memory for Animal objects
@@ -106,6 +125,9 @@ int main() {
         plants[i]->isEdible();
         plants[i]->displayInfo();
     }
+
+    // Display total plants
+    Plant::displayTotalPlants();
 
     // Deallocate memory for Animal objects
     for (int i = 0; i < 3; i++) {
