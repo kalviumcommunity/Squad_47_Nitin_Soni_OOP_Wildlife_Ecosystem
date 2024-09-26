@@ -61,31 +61,39 @@ public:
 };
 
 int main() {
-    // Array of Animal objects
-    Animal animals[3] = {
-        Animal("Lion", 100),
-        Animal("Deer", 80),
-        Animal("Elephant", 150)
-    };
+    // Dynamically allocate memory for Animal objects
+    Animal* animals[3];
+    animals[0] = new Animal("Lion", 100);
+    animals[1] = new Animal("Deer", 80);
+    animals[2] = new Animal("Elephant", 150);
 
-    // Array of Plant objects
-    Plant plants[2] = {
-        Plant("Grass", 5),
-        Plant("Cactus", 2)
-    };
+    // Dynamically allocate memory for Plant objects
+    Plant* plants[2];
+    plants[0] = new Plant("Grass", 5);
+    plants[1] = new Plant("Cactus", 2);
 
     // Call member functions on Animal objects
     for (int i = 0; i < 3; i++) {
-        animals[i].move();
-        animals[i].eat();
-        animals[i].displayInfo();
+        animals[i]->move();
+        animals[i]->eat();
+        animals[i]->displayInfo();
     }
 
     // Call member functions on Plant objects
     for (int i = 0; i < 2; i++) {
-        plants[i].grow();
-        plants[i].isEdible();
-        plants[i].displayInfo();
+        plants[i]->grow();
+        plants[i]->isEdible();
+        plants[i]->displayInfo();
+    }
+
+    // Deallocate memory for Animal objects
+    for (int i = 0; i < 3; i++) {
+        delete animals[i];
+    }
+
+    // Deallocate memory for Plant objects
+    for (int i = 0; i < 2; i++) {
+        delete plants[i];
     }
 
     return 0;
