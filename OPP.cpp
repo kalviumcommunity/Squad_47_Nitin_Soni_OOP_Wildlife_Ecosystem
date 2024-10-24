@@ -9,13 +9,14 @@ private:
     int energyLevel;      // Private data member for energy level (abstracts internal details)
     static int totalAnimals;  // Static variable to keep track of the total number of Animal objects
 
+
+
 public:
     // Default constructor: Initializes the species and energyLevel with default values
     Animal() : species("Unknown"), energyLevel(50) {
         totalAnimals++;  // Increment totalAnimals
         cout << "A new " << species << " has been created using the default constructor. Total animals: " << totalAnimals << endl;
     }
-
 
 
 
@@ -170,11 +171,7 @@ int main() {
     animals[2] = new Animal("Elephant", 150); // Parameterized constructor
 
     // Call member functions on Animal objects
-    for (int i = 0; i < 3; i++) {
-        animals[i]->move();
-        animals[i]->eat();
-        animals[i]->displayInfo();
-    }
+ 
 
     // Display total animals
     Animal::displayTotalAnimals();
