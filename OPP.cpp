@@ -7,7 +7,7 @@ class Animal {
 private:
     string species;
     int energyLevel;
-    static int totalAnimals;  // Static variable to keep track of the number of Animal
+    static int totalAnimals;  // Static variable to keep track of the number of Animals
 
 public:
     // Constructor to initialize animal's species and energy level
@@ -22,16 +22,40 @@ public:
         cout << species << " has been destroyed. Total animals: " << totalAnimals << endl;
     }
 
+    // Accessor (getter) for species
+    string getSpecies() {
+        return species;
+    }
+
+    // Mutator (setter) for species
+    void setSpecies(string sp) {
+        species = sp;
+    }
+
+    // Accessor (getter) for energyLevel
+    int getEnergyLevel() {
+        return energyLevel;
+    }
+
+    // Mutator (setter) for energyLevel
+    void setEnergyLevel(int energy) {
+        if (energy >= 0) {  // Ensuring energy level is non-negative
+            energyLevel = energy;
+        } else {
+            cout << "Energy level can't be negative!" << endl;
+        }
+    }
+
     // Member function to simulate animal movement
     void move() {
-        this->energyLevel -= 10;  // Use of 'this' pointer to access the object's energyLevel
-        cout << this->species << " is moving. Energy left: " << this->energyLevel << endl;
+        setEnergyLevel(energyLevel - 10);  // Using setter
+        cout << getSpecies() << " is moving. Energy left: " << getEnergyLevel() << endl;
     }
 
     // Member function to simulate animal eating
     void eat() {
-        this->energyLevel += 20;  // Use of 'this' pointer to access the object's energyLevel
-        cout << this->species << " is eating. Energy restored to: " << this->energyLevel << endl;
+        setEnergyLevel(energyLevel + 20);  // Using setter
+        cout << getSpecies() << " is eating. Energy restored to: " << getEnergyLevel() << endl;
     }
 
     // Static function to display the total number of animals
@@ -41,7 +65,7 @@ public:
 
     // Function to display animal information
     void displayInfo() {
-        cout << "Species: " << this->species << ", Energy Level: " << this->energyLevel << endl;
+        cout << "Species: " << getSpecies() << ", Energy Level: " << getEnergyLevel() << endl;
     }
 };
 
@@ -69,17 +93,41 @@ public:
         cout << plantType << " has been destroyed. Total plants: " << totalPlants << endl;
     }
 
+    // Accessor (getter) for plantType
+    string getPlantType() {
+        return plantType;
+    }
+
+    // Mutator (setter) for plantType
+    void setPlantType(string type) {
+        plantType = type;
+    }
+
+    // Accessor (getter) for growthRate
+    int getGrowthRate() {
+        return growthRate;
+    }
+
+    // Mutator (setter) for growthRate
+    void setGrowthRate(int rate) {
+        if (rate > 0) {
+            growthRate = rate;
+        } else {
+            cout << "Growth rate must be positive!" << endl;
+        }
+    }
+
     // Member function to simulate plant growing
     void grow() {
-        cout << this->plantType << " is growing at a rate of " << this->growthRate << " per day." << endl; // Use of 'this' pointer
+        cout << getPlantType() << " is growing at a rate of " << getGrowthRate() << " per day." << endl;
     }
 
     // Member function to determine if the plant is edible
     void isEdible() {
-        if (this->plantType == "Grass") {  // Use of 'this' pointer
-            cout << this->plantType << " is edible by herbivores." << endl;
+        if (getPlantType() == "Grass") {
+            cout << getPlantType() << " is edible by herbivores." << endl;
         } else {
-            cout << this->plantType << " is not edible." << endl;
+            cout << getPlantType() << " is not edible." << endl;
         }
     }
 
@@ -90,7 +138,7 @@ public:
 
     // Function to display plant information
     void displayInfo() {
-        cout << "Plant Type: " << this->plantType << ", Growth Rate: " << this->growthRate << endl;
+        cout << "Plant Type: " << getPlantType() << ", Growth Rate: " << getGrowthRate() << endl;
     }
 };
 
@@ -138,7 +186,7 @@ int main() {
     for (int i = 0; i < 2; i++) {
         delete plants[i];
     }
-    
+
     cout << "Memory deallocated." << endl;
 
     return 0;
