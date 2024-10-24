@@ -5,20 +5,26 @@ using namespace std;
 // Class definition for Animal
 class Animal {
 private:
-    string species;
-    int energyLevel;
-    static int totalAnimals;  // Static variable to keep track of the number of Animals
+    string species;       // Private data member for species (abstracts internal details)
+    int energyLevel;      // Private data member for energy level (abstracts internal details)
+    static int totalAnimals;  // Static variable to keep track of the total number of Animal objects
 
 public:
-    // Constructor to initialize animal's species and energy level
-    Animal(string sp, int energy) : species(sp), energyLevel(energy) {
+    // Default constructor: Initializes the species and energyLevel with default values
+    Animal() : species("Unknown"), energyLevel(50) {
         totalAnimals++;  // Increment totalAnimals
-        cout << "A new " << species << " has been created. Total animals: " << totalAnimals << endl;
+        cout << "A new " << species << " has been created using the default constructor. Total animals: " << totalAnimals << endl;
     }
 
-    // Destructor to decrement totalAnimals when an Animal is destroyed
+    // Parameterized constructor: Initializes the species and energy level with specified values
+    Animal(string sp, int energy) : species(sp), energyLevel(energy) {
+        totalAnimals++;  // Increment totalAnimals
+        cout << "A new " << species << " has been created using the parameterized constructor. Total animals: " << totalAnimals << endl;
+    }
+
+    // Destructor: Called when an object is destroyed
     ~Animal() {
-        totalAnimals--;
+        totalAnimals--;  // Decrement totalAnimals
         cout << species << " has been destroyed. Total animals: " << totalAnimals << endl;
     }
 
@@ -48,13 +54,13 @@ public:
 
     // Member function to simulate animal movement
     void move() {
-        setEnergyLevel(energyLevel - 10);  // Using setter
+        setEnergyLevel(energyLevel - 10);  // Using setter to update energy
         cout << getSpecies() << " is moving. Energy left: " << getEnergyLevel() << endl;
     }
 
     // Member function to simulate animal eating
     void eat() {
-        setEnergyLevel(energyLevel + 20);  // Using setter
+        setEnergyLevel(energyLevel + 20);  // Using setter to update energy
         cout << getSpecies() << " is eating. Energy restored to: " << getEnergyLevel() << endl;
     }
 
@@ -76,20 +82,26 @@ int Animal::totalAnimals = 0;
 // Class definition for Plant
 class Plant {
 private:
-    string plantType;
-    int growthRate;
-    static int totalPlants;  // Static variable to keep track of the number of Plant instances
+    string plantType;       // Private data member for plant type (abstracts internal details)
+    int growthRate;         // Private data member for growth rate (abstracts internal details)
+    static int totalPlants; // Static variable to keep track of the total number of Plant objects
 
 public:
-    // Constructor to initialize plant type and growth rate
-    Plant(string type, int rate) : plantType(type), growthRate(rate) {
+    // Default constructor: Initializes plantType and growthRate with default values
+    Plant() : plantType("Unknown"), growthRate(1) {
         totalPlants++;  // Increment totalPlants when a new Plant is created
-        cout << "A new " << plantType << " has been created. Total plants: " << totalPlants << endl;
+        cout << "A new " << plantType << " has been created using the default constructor. Total plants: " << totalPlants << endl;
     }
 
-    // Destructor to decrement totalPlants when a Plant is destroyed
+    // Parameterized constructor: Initializes plantType and growthRate with specified values
+    Plant(string type, int rate) : plantType(type), growthRate(rate) {
+        totalPlants++;  // Increment totalPlants when a new Plant is created
+        cout << "A new " << plantType << " has been created using the parameterized constructor. Total plants: " << totalPlants << endl;
+    }
+
+    // Destructor: Called when an object is destroyed
     ~Plant() {
-        totalPlants--;
+        totalPlants--;  // Decrement totalPlants when a Plant is destroyed
         cout << plantType << " has been destroyed. Total plants: " << totalPlants << endl;
     }
 
@@ -146,11 +158,11 @@ public:
 int Plant::totalPlants = 0;
 
 int main() {
-    // Dynamically allocate memory for Animal objects
+    // Dynamically allocate memory for Animal objects using both default and parameterized constructors
     Animal* animals[3];
-    animals[0] = new Animal("Lion", 100);
-    animals[1] = new Animal("Deer", 80);
-    animals[2] = new Animal("Elephant", 150);
+    animals[0] = new Animal();                // Default constructor
+    animals[1] = new Animal("Deer", 80);      // Parameterized constructor
+    animals[2] = new Animal("Elephant", 150); // Parameterized constructor
 
     // Call member functions on Animal objects
     for (int i = 0; i < 3; i++) {
@@ -162,10 +174,10 @@ int main() {
     // Display total animals
     Animal::displayTotalAnimals();
 
-    // Dynamically allocate memory for Plant objects
+    // Dynamically allocate memory for Plant objects using both default and parameterized constructors
     Plant* plants[2];
-    plants[0] = new Plant("Grass", 5);
-    plants[1] = new Plant("Cactus", 2);
+    plants[0] = new Plant();               // Default constructor
+    plants[1] = new Plant("Cactus", 2);    // Parameterized constructor
 
     // Call member functions on Plant objects
     for (int i = 0; i < 2; i++) {
@@ -177,12 +189,12 @@ int main() {
     // Display total plants
     Plant::displayTotalPlants();
 
-    // Deallocate memory for Animal objects
+    // Deallocate memory for Animal objects (explicit destructor call)
     for (int i = 0; i < 3; i++) {
         delete animals[i];
     }
 
-    // Deallocate memory for Plant objects
+    // Deallocate memory for Plant objects (explicit destructor call)
     for (int i = 0; i < 2; i++) {
         delete plants[i];
     }
