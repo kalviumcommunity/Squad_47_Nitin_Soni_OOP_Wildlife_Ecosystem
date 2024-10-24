@@ -16,11 +16,16 @@ public:
         cout << "A new " << species << " has been created using the default constructor. Total animals: " << totalAnimals << endl;
     }
 
+
+
+
     // Parameterized constructor: Initializes the species and energy level with specified values
     Animal(string sp, int energy) : species(sp), energyLevel(energy) {
         totalAnimals++;  // Increment totalAnimals
         cout << "A new " << species << " has been created using the parameterized constructor. Total animals: " << totalAnimals << endl;
     }
+
+
 
     // Destructor: Called when an object is destroyed
     ~Animal() {
