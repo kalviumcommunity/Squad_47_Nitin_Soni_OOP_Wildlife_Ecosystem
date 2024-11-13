@@ -2,71 +2,53 @@
 #include <string>
 using namespace std;
 
-// Class definition for Animal
+// Base class definition for Animal
 class Animal {
 private:
-    string species;       // Private data member for species (abstracts internal details)
-    int energyLevel;      // Private data member for energy level (abstracts internal details)
-    static int totalAnimals;  // Static variable to keep track of the total number of Animal objects
-
-
+    string species;       // Private data member for species
+    int energyLevel;      // Private data member for energy level
+    static int totalAnimals;  // Static variable to keep track of total Animal objects
 
 public:
-    // Default constructor: Initializes the species and energyLevel with default values
+    // Default constructor
     Animal() : species("Unknown"), energyLevel(50) {
-        totalAnimals++;  // Increment totalAnimals
+        totalAnimals++;
         cout << "A new " << species << " has been created using the default constructor. Total animals: " << totalAnimals << endl;
     }
-
-
-
-    // Parameterized constructor: Initializes the species and energy level with specified values
+    
+    // Parameterized constructor
     Animal(string sp, int energy) : species(sp), energyLevel(energy) {
-        totalAnimals++;  // Increment totalAnimals
+        totalAnimals++;
         cout << "A new " << species << " has been created using the parameterized constructor. Total animals: " << totalAnimals << endl;
     }
 
-
-
-    // Destructor: Called when an object is destroyed
+    // Destructor
     ~Animal() {
-        totalAnimals--;  // Decrement totalAnimals
+        totalAnimals--;
         cout << species << " has been destroyed. Total animals: " << totalAnimals << endl;
     }
 
-    // Accessor (getter) for species
-    string getSpecies() {
-        return species;
-    }
+    // Accessor and mutator for species
+    string getSpecies() { return species; }
+    void setSpecies(string sp) { species = sp; }
 
-    // Mutator (setter) for species
-    void setSpecies(string sp) {
-        species = sp;
-    }
-
-    // Accessor (getter) for energyLevel
-    int getEnergyLevel() {
-        return energyLevel;
-    }
-
-    // Mutator (setter) for energyLevel
+    // Accessor and mutator for energyLevel
+    int getEnergyLevel() { return energyLevel; }
     void setEnergyLevel(int energy) {
-        if (energy >= 0) {  // Ensuring energy level is non-negative
+        if (energy >= 0) {
             energyLevel = energy;
         } else {
             cout << "Energy level can't be negative!" << endl;
         }
     }
 
-    // Member function to simulate animal movement
+    // Member functions for Animal
     void move() {
-        setEnergyLevel(energyLevel - 10);  // Using setter to update energy
+        setEnergyLevel(energyLevel - 10);
         cout << getSpecies() << " is moving. Energy left: " << getEnergyLevel() << endl;
     }
-
-    // Member function to simulate animal eating
     void eat() {
-        setEnergyLevel(energyLevel + 20);  // Using setter to update energy
+        setEnergyLevel(energyLevel + 20);
         cout << getSpecies() << " is eating. Energy restored to: " << getEnergyLevel() << endl;
     }
 
@@ -84,49 +66,50 @@ public:
 // Initialize static variable
 int Animal::totalAnimals = 0;
 
+// Derived class Mammal from Animal
+class Mammal : public Animal {
+public:
+    // Constructor for Mammal
+    Mammal(string sp, int energy) : Animal(sp, energy) {}
 
-// Class definition for Plant
+    // Additional behavior specific to Mammals
+    void nurseYoung() {
+        cout << getSpecies() << " is nursing its young." << endl;
+    }
+};
+
+// Base class definition for Plant
 class Plant {
 private:
-    string plantType;       // Private data member for plant type (abstracts internal details)
-    int growthRate;         // Private data member for growth rate (abstracts internal details)
-    static int totalPlants; // Static variable to keep track of the total number of Plant objects
+    string plantType;       // Private data member for plant type
+    int growthRate;         // Private data member for growth rate
+    static int totalPlants; // Static variable to keep track of total Plant objects
 
 public:
-    // Default constructor: Initializes plantType and growthRate with default values
+    // Default constructor
     Plant() : plantType("Unknown"), growthRate(1) {
-        totalPlants++;  // Increment totalPlants when a new Plant is created
+        totalPlants++;
         cout << "A new " << plantType << " has been created using the default constructor. Total plants: " << totalPlants << endl;
     }
 
-    // Parameterized constructor: Initializes plantType and growthRate with specified values
+    // Parameterized constructor
     Plant(string type, int rate) : plantType(type), growthRate(rate) {
-        totalPlants++;  // Increment totalPlants when a new Plant is created
+        totalPlants++;
         cout << "A new " << plantType << " has been created using the parameterized constructor. Total plants: " << totalPlants << endl;
     }
 
-    // Destructor: Called when an object is destroyed
+    // Destructor
     ~Plant() {
-        totalPlants--;  // Decrement totalPlants when a Plant is destroyed
+        totalPlants--;
         cout << plantType << " has been destroyed. Total plants: " << totalPlants << endl;
     }
 
-    // Accessor (getter) for plantType
-    string getPlantType() {
-        return plantType;
-    }
+    // Accessor and mutator for plantType
+    string getPlantType() { return plantType; }
+    void setPlantType(string type) { plantType = type; }
 
-    // Mutator (setter) for plantType
-    void setPlantType(string type) {
-        plantType = type;
-    }
-
-    // Accessor (getter) for growthRate
-    int getGrowthRate() {
-        return growthRate;
-    }
-
-    // Mutator (setter) for growthRate
+    // Accessor and mutator for growthRate
+    int getGrowthRate() { return growthRate; }
     void setGrowthRate(int rate) {
         if (rate > 0) {
             growthRate = rate;
@@ -135,12 +118,10 @@ public:
         }
     }
 
-    // Member function to simulate plant growing
+    // Member functions for Plant
     void grow() {
         cout << getPlantType() << " is growing at a rate of " << getGrowthRate() << " per day." << endl;
     }
-
-    // Member function to determine if the plant is edible
     void isEdible() {
         if (getPlantType() == "Grass") {
             cout << getPlantType() << " is edible by herbivores." << endl;
@@ -163,40 +144,49 @@ public:
 // Initialize static variable
 int Plant::totalPlants = 0;
 
+// Derived class FloweringPlant from Plant
+class FloweringPlant : public Plant {
+public:
+    // Constructor for FloweringPlant
+    FloweringPlant(string type, int rate) : Plant(type, rate) {}
+
+    // Additional behavior specific to FloweringPlants
+    void bloom() {
+        cout << getPlantType() << " is blooming." << endl;
+    }
+};
+
 int main() {
-    // Dynamically allocate memory for Animal objects using both default and parameterized constructors
-    Animal* animals[3];
+    // Dynamically allocate Animal objects using default and parameterized constructors
+    Animal* animals[2];
     animals[0] = new Animal();                // Default constructor
-    animals[1] = new Animal("Deer", 80);      // Parameterized constructor
-    animals[2] = new Animal("Elephant", 150); // Parameterized constructor
+    animals[1] = new Mammal("Tiger", 90);     // Parameterized constructor for Mammal
 
     // Call member functions on Animal objects
- 
+    animals[1]->move();  // This will work for both Animal and Mammal
+    static_cast<Mammal*>(animals[1])->nurseYoung();  // Specific to Mammal
 
     // Display total animals
     Animal::displayTotalAnimals();
 
-    // Dynamically allocate memory for Plant objects using both default and parameterized constructors
+    // Dynamically allocate Plant objects using default and parameterized constructors
     Plant* plants[2];
-    plants[0] = new Plant();               // Default constructor
-    plants[1] = new Plant("Cactus", 2);    // Parameterized constructor
+    plants[0] = new Plant();                  // Default constructor
+    plants[1] = new FloweringPlant("Rose", 3); // Parameterized constructor for FloweringPlant
 
     // Call member functions on Plant objects
-    for (int i = 0; i < 2; i++) {
-        plants[i]->grow();
-        plants[i]->isEdible();
-        plants[i]->displayInfo();
-    }
+    plants[1]->grow();
+    static_cast<FloweringPlant*>(plants[1])->bloom();  // Specific to FloweringPlant
 
     // Display total plants
     Plant::displayTotalPlants();
 
-    // Deallocate memory for Animal objects (explicit destructor call)
-    for (int i = 0; i < 3; i++) {
+    // Deallocate memory for Animal objects
+    for (int i = 0; i < 2; i++) {
         delete animals[i];
     }
 
-    // Deallocate memory for Plant objects (explicit destructor call)
+    // Deallocate memory for Plant objects
     for (int i = 0; i < 2; i++) {
         delete plants[i];
     }
