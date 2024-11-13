@@ -2,38 +2,41 @@
 #include <string>
 using namespace std;
 
-// Base class definition for Animal
+// Class definition for Animal
 class Animal {
 private:
-    string species;       // Private data member for species
-    int energyLevel;      // Private data member for energy level
-    static int totalAnimals;  // Static variable to keep track of total Animal objects
+    string species;
+    int energyLevel;
+    static int totalAnimals;
 
 public:
-    // Default constructor
     Animal() : species("Unknown"), energyLevel(50) {
         totalAnimals++;
         cout << "A new " << species << " has been created using the default constructor. Total animals: " << totalAnimals << endl;
     }
-    
-    // Parameterized constructor
+
     Animal(string sp, int energy) : species(sp), energyLevel(energy) {
         totalAnimals++;
         cout << "A new " << species << " has been created using the parameterized constructor. Total animals: " << totalAnimals << endl;
     }
 
-    // Destructor
-    ~Animal() {
+    virtual ~Animal() {
         totalAnimals--;
         cout << species << " has been destroyed. Total animals: " << totalAnimals << endl;
     }
 
-    // Accessor and mutator for species
-    string getSpecies() { return species; }
-    void setSpecies(string sp) { species = sp; }
+    string getSpecies() {
+        return species;
+    }
 
-    // Accessor and mutator for energyLevel
-    int getEnergyLevel() { return energyLevel; }
+    void setSpecies(string sp) {
+        species = sp;
+    }
+
+    int getEnergyLevel() {
+        return energyLevel;
+    }
+
     void setEnergyLevel(int energy) {
         if (energy >= 0) {
             energyLevel = energy;
@@ -42,74 +45,78 @@ public:
         }
     }
 
-    // Member functions for Animal
-    void move() {
+    virtual void move() { // Virtual function to be overridden
         setEnergyLevel(energyLevel - 10);
         cout << getSpecies() << " is moving. Energy left: " << getEnergyLevel() << endl;
     }
-    void eat() {
+
+    virtual void eat() { // Virtual function to be overridden
         setEnergyLevel(energyLevel + 20);
         cout << getSpecies() << " is eating. Energy restored to: " << getEnergyLevel() << endl;
     }
 
-    // Static function to display the total number of animals
     static void displayTotalAnimals() {
         cout << "Total number of animals: " << totalAnimals << endl;
     }
 
-    // Function to display animal information
     void displayInfo() {
         cout << "Species: " << getSpecies() << ", Energy Level: " << getEnergyLevel() << endl;
     }
 };
 
-// Initialize static variable
 int Animal::totalAnimals = 0;
 
-// Derived class Mammal from Animal
+// Derived class Mammal inheriting from Animal
 class Mammal : public Animal {
 public:
-    // Constructor for Mammal
     Mammal(string sp, int energy) : Animal(sp, energy) {}
 
-    // Additional behavior specific to Mammals
+    // Overriding the move function for Mammal
+    void move() override {
+        setEnergyLevel(getEnergyLevel() - 5); // Less energy consumed for mammals
+        cout << getSpecies() << " is running. Energy left: " << getEnergyLevel() << endl;
+    }
+
     void nurseYoung() {
         cout << getSpecies() << " is nursing its young." << endl;
     }
 };
 
-// Base class definition for Plant
+// Class definition for Plant
 class Plant {
 private:
-    string plantType;       // Private data member for plant type
-    int growthRate;         // Private data member for growth rate
-    static int totalPlants; // Static variable to keep track of total Plant objects
+    string plantType;
+    int growthRate;
+    static int totalPlants;
 
 public:
-    // Default constructor
     Plant() : plantType("Unknown"), growthRate(1) {
         totalPlants++;
         cout << "A new " << plantType << " has been created using the default constructor. Total plants: " << totalPlants << endl;
     }
 
-    // Parameterized constructor
     Plant(string type, int rate) : plantType(type), growthRate(rate) {
         totalPlants++;
         cout << "A new " << plantType << " has been created using the parameterized constructor. Total plants: " << totalPlants << endl;
     }
 
-    // Destructor
-    ~Plant() {
+    virtual ~Plant() {
         totalPlants--;
         cout << plantType << " has been destroyed. Total plants: " << totalPlants << endl;
     }
 
-    // Accessor and mutator for plantType
-    string getPlantType() { return plantType; }
-    void setPlantType(string type) { plantType = type; }
+    string getPlantType() {
+        return plantType;
+    }
 
-    // Accessor and mutator for growthRate
-    int getGrowthRate() { return growthRate; }
+    void setPlantType(string type) {
+        plantType = type;
+    }
+
+    int getGrowthRate() {
+        return growthRate;
+    }
+
     void setGrowthRate(int rate) {
         if (rate > 0) {
             growthRate = rate;
@@ -118,10 +125,10 @@ public:
         }
     }
 
-    // Member functions for Plant
-    void grow() {
+    virtual void grow() { // Virtual function to be overridden
         cout << getPlantType() << " is growing at a rate of " << getGrowthRate() << " per day." << endl;
     }
+
     void isEdible() {
         if (getPlantType() == "Grass") {
             cout << getPlantType() << " is edible by herbivores." << endl;
@@ -130,66 +137,81 @@ public:
         }
     }
 
-    // Static function to display the total number of plants
     static void displayTotalPlants() {
         cout << "Total number of plants: " << totalPlants << endl;
     }
 
-    // Function to display plant information
     void displayInfo() {
         cout << "Plant Type: " << getPlantType() << ", Growth Rate: " << getGrowthRate() << endl;
     }
 };
 
-// Initialize static variable
 int Plant::totalPlants = 0;
 
-// Derived class FloweringPlant from Plant
+// Derived class FloweringPlant inheriting from Plant
 class FloweringPlant : public Plant {
 public:
-    // Constructor for FloweringPlant
     FloweringPlant(string type, int rate) : Plant(type, rate) {}
 
-    // Additional behavior specific to FloweringPlants
+    // Overriding the grow function for FloweringPlant
+    void grow() override {
+        cout << getPlantType() << " is blooming and growing at a rate of " << getGrowthRate() << " per day." << endl;
+    }
+
     void bloom() {
-        cout << getPlantType() << " is blooming." << endl;
+        cout << getPlantType() << " is blooming!" << endl;
     }
 };
 
 int main() {
-    // Dynamically allocate Animal objects using default and parameterized constructors
-    Animal* animals[2];
-    animals[0] = new Animal();                // Default constructor
-    animals[1] = new Mammal("Tiger", 90);     // Parameterized constructor for Mammal
+    // Animal objects
+    Animal* animals[3];
+    animals[0] = new Animal();
+    animals[1] = new Animal("Deer", 80);
+    animals[2] = new Animal("Elephant", 150);
 
-    // Call member functions on Animal objects
-    animals[1]->move();  // This will work for both Animal and Mammal
-    static_cast<Mammal*>(animals[1])->nurseYoung();  // Specific to Mammal
+    animals[1]->move();  // Will call Animal's move
+    animals[2]->eat();   // Will call Animal's eat
 
-    // Display total animals
     Animal::displayTotalAnimals();
 
-    // Dynamically allocate Plant objects using default and parameterized constructors
+    // Derived Mammal object
+    Mammal* mammal = new Mammal("Lion", 90);
+    mammal->nurseYoung();
+    mammal->move(); // Will call Mammal's move
+
+    Animal::displayTotalAnimals();
+
+    // Plant objects
     Plant* plants[2];
-    plants[0] = new Plant();                  // Default constructor
-    plants[1] = new FloweringPlant("Rose", 3); // Parameterized constructor for FloweringPlant
+    plants[0] = new Plant();
+    plants[1] = new Plant("Cactus", 2);
 
-    // Call member functions on Plant objects
-    plants[1]->grow();
-    static_cast<FloweringPlant*>(plants[1])->bloom();  // Specific to FloweringPlant
-
-    // Display total plants
-    Plant::displayTotalPlants();
-
-    // Deallocate memory for Animal objects
     for (int i = 0; i < 2; i++) {
-        delete animals[i];
+        plants[i]->grow();  // Will call Plant's grow
+        plants[i]->isEdible();
+        plants[i]->displayInfo();
     }
 
-    // Deallocate memory for Plant objects
+    Plant::displayTotalPlants();
+
+    // Derived FloweringPlant object
+    FloweringPlant* floweringPlant = new FloweringPlant("Rose", 3);
+    floweringPlant->bloom();
+    floweringPlant->grow(); // Will call FloweringPlant's grow
+
+    Plant::displayTotalPlants();
+
+    // Deallocate memory for Animal and Plant objects
+    for (int i = 0; i < 3; i++) {
+        delete animals[i];
+    }
+    delete mammal;
+
     for (int i = 0; i < 2; i++) {
         delete plants[i];
     }
+    delete floweringPlant;
 
     cout << "Memory deallocated." << endl;
 
