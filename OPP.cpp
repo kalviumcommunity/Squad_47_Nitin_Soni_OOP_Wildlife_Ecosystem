@@ -57,8 +57,12 @@ public:
     Mammal(string sp, int energy) : Animal(sp, energy) {}
 
     void move() override {
-        setEnergyLevel(getEnergyLevel() - 5);
-        cout << getSpecies() << " is running. Energy left: " << getEnergyLevel() << endl;
+        if (getEnergyLevel() > 5) {
+            setEnergyLevel(getEnergyLevel() - 5);
+            cout << getSpecies() << " is running. Energy left: " << getEnergyLevel() << endl;
+        } else {
+            cout << getSpecies() << " is too tired to run. Energy too low!" << endl;
+        }
     }
 
     void eat() override {
@@ -77,8 +81,12 @@ public:
     Bird(string sp, int energy) : Animal(sp, energy) {}
 
     void move() override {
-        setEnergyLevel(getEnergyLevel() - 10);
-        cout << getSpecies() << " is flying. Energy left: " << getEnergyLevel() << endl;
+        if (getEnergyLevel() > 10) {
+            setEnergyLevel(getEnergyLevel() - 10);
+            cout << getSpecies() << " is flying. Energy left: " << getEnergyLevel() << endl;
+        } else {
+            cout << getSpecies() << " is too tired to fly. Energy too low!" << endl;
+        }
     }
 
     void eat() override {
@@ -190,8 +198,8 @@ int main() {
     PlantManager plantManager;
 
     // Adding Animals
-    animalManager.addAnimal(make_unique<Mammal>("Lion", 90));
-    animalManager.addAnimal(make_unique<Bird>("Parrot", 50));
+    animalManager.addAnimal(make_unique<Mammal>("Lion", 90));  // Mammal
+    animalManager.addAnimal(make_unique<Bird>("Parrot", 50));  // Bird
 
     cout << "\nDisplaying All Animals:\n";
     animalManager.displayAllAnimals();
