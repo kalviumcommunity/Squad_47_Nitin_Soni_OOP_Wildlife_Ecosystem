@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <memory>
 using namespace std;
 
 // Class definition for Animal
@@ -25,17 +27,11 @@ public:
         cout << species << " has been destroyed. Total animals: " << totalAnimals << endl;
     }
 
-    string getSpecies() {
-        return species;
-    }
+    string getSpecies() const { return species; }
 
-    void setSpecies(string sp) {
-        species = sp;
-    }
+    void setSpecies(const string& sp) { species = sp; }
 
-    int getEnergyLevel() {
-        return energyLevel;
-    }
+    int getEnergyLevel() const { return energyLevel; }
 
     void setEnergyLevel(int energy) {
         if (energy >= 0) {
@@ -45,22 +41,22 @@ public:
         }
     }
 
-    virtual void move() { // Virtual function to be overridden
+    virtual void move() {
         setEnergyLevel(energyLevel - 10);
-        cout << getSpecies() << " is moving. Energy left: " << getEnergyLevel() << endl;
+        cout << species << " is moving. Energy left: " << energyLevel << endl;
     }
 
-    virtual void eat() { // Virtual function to be overridden
+    virtual void eat() {
         setEnergyLevel(energyLevel + 20);
-        cout << getSpecies() << " is eating. Energy restored to: " << getEnergyLevel() << endl;
+        cout << species << " is eating. Energy restored to: " << energyLevel << endl;
     }
 
     static void displayTotalAnimals() {
         cout << "Total number of animals: " << totalAnimals << endl;
     }
 
-    void displayInfo() {
-        cout << "Species: " << getSpecies() << ", Energy Level: " << getEnergyLevel() << endl;
+    void displayInfo() const {
+        cout << "Species: " << species << ", Energy Level: " << energyLevel << endl;
     }
 };
 
@@ -71,9 +67,8 @@ class Mammal : public Animal {
 public:
     Mammal(string sp, int energy) : Animal(sp, energy) {}
 
-    // Overriding the move function for Mammal
     void move() override {
-        setEnergyLevel(getEnergyLevel() - 5); // Less energy consumed for mammals
+        setEnergyLevel(getEnergyLevel() - 5);
         cout << getSpecies() << " is running. Energy left: " << getEnergyLevel() << endl;
     }
 
@@ -105,17 +100,11 @@ public:
         cout << plantType << " has been destroyed. Total plants: " << totalPlants << endl;
     }
 
-    string getPlantType() {
-        return plantType;
-    }
+    string getPlantType() const { return plantType; }
 
-    void setPlantType(string type) {
-        plantType = type;
-    }
+    void setPlantType(const string& type) { plantType = type; }
 
-    int getGrowthRate() {
-        return growthRate;
-    }
+    int getGrowthRate() const { return growthRate; }
 
     void setGrowthRate(int rate) {
         if (rate > 0) {
@@ -125,24 +114,16 @@ public:
         }
     }
 
-    virtual void grow() { // Virtual function to be overridden
-        cout << getPlantType() << " is growing at a rate of " << getGrowthRate() << " per day." << endl;
+    virtual void grow() {
+        cout << plantType << " is growing at a rate of " << growthRate << " per day." << endl;
     }
 
-    void isEdible() {
-        if (getPlantType() == "Grass") {
-            cout << getPlantType() << " is edible by herbivores." << endl;
-        } else {
-            cout << getPlantType() << " is not edible." << endl;
-        }
+    void displayInfo() const {
+        cout << "Plant Type: " << plantType << ", Growth Rate: " << growthRate << endl;
     }
 
     static void displayTotalPlants() {
         cout << "Total number of plants: " << totalPlants << endl;
-    }
-
-    void displayInfo() {
-        cout << "Plant Type: " << getPlantType() << ", Growth Rate: " << getGrowthRate() << endl;
     }
 };
 
@@ -153,7 +134,6 @@ class FloweringPlant : public Plant {
 public:
     FloweringPlant(string type, int rate) : Plant(type, rate) {}
 
-    // Overriding the grow function for FloweringPlant
     void grow() override {
         cout << getPlantType() << " is blooming and growing at a rate of " << getGrowthRate() << " per day." << endl;
     }
@@ -163,57 +143,59 @@ public:
     }
 };
 
+// Manager class for Animals
+class AnimalManager {
+private:
+    vector<unique_ptr<Animal>> animals;
+
+public:
+    void addAnimal(unique_ptr<Animal> animal) {
+        animals.push_back(move(animal));
+    }
+
+    void displayAllAnimals() const {
+        for (const auto& animal : animals) {
+            animal->displayInfo();
+        }
+    }
+};
+
+// Manager class for Plants
+class PlantManager {
+private:
+    vector<unique_ptr<Plant>> plants;
+
+public:
+    void addPlant(unique_ptr<Plant> plant) {
+        plants.push_back(move(plant));
+    }
+
+    void displayAllPlants() const {
+        for (const auto& plant : plants) {
+            plant->displayInfo();
+        }
+    }
+};
+
 int main() {
-    // Animal objects
-    Animal* animals[3];
-    animals[0] = new Animal();
-    animals[1] = new Animal("Deer", 80);
-    animals[2] = new Animal("Elephant", 150);
+    AnimalManager animalManager;
+    PlantManager plantManager;
 
-    animals[1]->move();  // Will call Animal's move
-    animals[2]->eat();   // Will call Animal's eat
+    // Adding Animals
+    animalManager.addAnimal(make_unique<Animal>());
+    animalManager.addAnimal(make_unique<Animal>("Deer", 80));
+    animalManager.addAnimal(make_unique<Mammal>("Lion", 90));
 
-    Animal::displayTotalAnimals();
+    cout << "\nDisplaying All Animals:\n";
+    animalManager.displayAllAnimals();
 
-    // Derived Mammal object
-    Mammal* mammal = new Mammal("Lion", 90);
-    mammal->nurseYoung();
-    mammal->move(); // Will call Mammal's move
+    // Adding Plants
+    plantManager.addPlant(make_unique<Plant>());
+    plantManager.addPlant(make_unique<FloweringPlant>("Rose", 3));
 
-    Animal::displayTotalAnimals();
+    cout << "\nDisplaying All Plants:\n";
+    plantManager.displayAllPlants();
 
-    // Plant objects
-    Plant* plants[2];
-    plants[0] = new Plant();
-    plants[1] = new Plant("Cactus", 2);
-
-    for (int i = 0; i < 2; i++) {
-        plants[i]->grow();  // Will call Plant's grow
-        plants[i]->isEdible();
-        plants[i]->displayInfo();
-    }
-
-    Plant::displayTotalPlants();
-
-    // Derived FloweringPlant object
-    FloweringPlant* floweringPlant = new FloweringPlant("Rose", 3);
-    floweringPlant->bloom();
-    floweringPlant->grow(); // Will call FloweringPlant's grow
-
-    Plant::displayTotalPlants();
-
-    // Deallocate memory for Animal and Plant objects
-    for (int i = 0; i < 3; i++) {
-        delete animals[i];
-    }
-    delete mammal;
-
-    for (int i = 0; i < 2; i++) {
-        delete plants[i];
-    }
-    delete floweringPlant;
-
-    cout << "Memory deallocated." << endl;
-
+    cout << "\nProgram Ended Successfully." << endl;
     return 0;
 }
